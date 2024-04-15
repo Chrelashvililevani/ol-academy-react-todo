@@ -1,0 +1,36 @@
+.input-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Adjust the height as needed */
+}
+
+.input-text input {
+  /* Add additional styles for the input if needed */
+}
+
+.input-text p {
+  /* Add additional styles for the paragraph if needed */
+}
+.task-input-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .task-input {
+    margin-right: 5px;
+  }
+  
+  .add-task-button {
+    margin-left: 5px;
+  }
+.span-span {
+    padding-right: 5px;
+}  
+.done-done {
+    margin-right: 5px;
+}
+.delete-delete {
+    margin-right: 5px;
+}
