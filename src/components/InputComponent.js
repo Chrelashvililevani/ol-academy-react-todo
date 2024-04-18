@@ -20,6 +20,8 @@ class InputComponent extends Component {
   
     // Check if the input value is empty
     if (inputValue.trim() === '') {
+      this.setState({ errorMessage: 'Cannot add Task it is empty!' });
+      this.clearErrorMessageAfterDelay();
       return; // Do nothing if the input is empty
     }
   
@@ -27,7 +29,8 @@ class InputComponent extends Component {
     const taskExists = tasks.some(task => task.text === inputValue);
     if (taskExists) {
       // Task already exists, set error message
-      this.setState({ errorMessage: 'This task already exists.' });
+      this.setState({ errorMessage: 'This task already exists!' });
+      this.clearErrorMessageAfterDelay();
       return; // Exit function
     }
   
@@ -44,6 +47,12 @@ class InputComponent extends Component {
       this.setState({ tasks: [...tasks, { text: inputValue, isDone: false, isChecked: false }] });
     }
     this.setState({ inputValue: '' }); // Clear input after adding task or editing task
+  };
+
+  clearErrorMessageAfterDelay = () => {
+    setTimeout(() => {
+      this.setState({ errorMessage: '' });
+    }, 5000); // Clear error message after 5 seconds
   };
     
   deleteTask = (index) => {
@@ -127,30 +136,36 @@ class InputComponent extends Component {
         <ul>
           {tasks.map((task, index) => (
             <li key={index}>
-            <input type="checkbox" checked={task.isChecked} onChange={() => this.toggleTaskChecked(index)} />
+              <input type="checkbox" checked={task.isChecked} onChange={() => this.toggleTaskChecked(index)} />
               <span style={{ textDecoration: task.isDone ? 'line-through' : 'none' }}>
                 {task.text}
               </span>
               <div className="task-buttons">
-                <button onClick={() => this.moveTaskUp(index)} disabled={index === 0}>
+                <button className='button-up' onClick={() => this.moveTaskUp(index)} disabled={index === 0}>
                   Up
                 </button>
-                <button onClick={() => this.moveTaskDown(index)} disabled={index === tasks.length - 1}>
+                <button className='button-down' onClick={() => this.moveTaskDown(index)} disabled={index === tasks.length - 1}>
                   Down
                 </button>
-                <button onClick={() => this.deleteTask(index)}>Delete</button>
-                <button onClick={() => this.editTask(index)}>Edit</button>
-                <button onClick={() => this.toggleTaskDone(index)}>
+                <button className='button-delete-on' onClick={() => this.deleteTask(index)}>Delete</button>
+                <button className='button-edit-on'  onClick={() => this.editTask(index)}>Edit</button>
+                <button className='button-undo-done-on' onClick={() => this.toggleTaskDone(index)}>
                   {task.isDone ? 'Undo' : 'Done'}
                 </button>
               </div>
             </li>
           ))}
         </ul>
-        {errorMessage && <span>{errorMessage}</span>} {/* Display error message */}
-        <button onClick={this.handleDeleteAllTasks}>Delete All Tasks</button>
-        <button onClick={this.handleDeleteAllDoneTasks}>Delete All Done Tasks</button>
-        <button onClick={this.handleDeleteAllCheckedTasks}>Delete All Checked Tasks</button>
+        {errorMessage && (
+          <div className="error-message">
+            {errorMessage}
+          </div>
+        )}
+        <div className='buttons-delete'>
+        <button className='button-delete-all' onClick={this.handleDeleteAllTasks}>Delete All Tasks</button>
+        <button className='button-delete-all-done' onClick={this.handleDeleteAllDoneTasks}>Delete All Done Tasks</button>
+        <button className='button-delete-all-checked' onClick={this.handleDeleteAllCheckedTasks}>Delete All Checked Tasks</button>
+        </div>
       </div>
     );
   }
